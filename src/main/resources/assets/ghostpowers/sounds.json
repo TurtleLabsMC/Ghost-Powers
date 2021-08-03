@@ -1,0 +1,8 @@
+{
+  "reapers_bell_ring": {
+    "subtitle": "subtitles.ghostpowers.reapers_bell_ring",
+    "sounds": [
+      "ghostpowers:reapers_bell_ring"
+    ]
+  }
+}
