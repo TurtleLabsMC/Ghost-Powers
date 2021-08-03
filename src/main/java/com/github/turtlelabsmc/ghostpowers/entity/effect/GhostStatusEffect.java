@@ -1,6 +1,7 @@
 package com.github.turtlelabsmc.ghostpowers.entity.effect;
 
 import com.github.turtlelabsmc.ghostpowers.GhostPowers;
+import com.github.turtlelabsmc.ghostpowers.mixin.LivingEntityRendererMixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.effect.StatusEffect;
@@ -20,6 +21,7 @@ public class GhostStatusEffect extends StatusEffect {
         if(entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             player.world.playSound(null, player.getBlockPos(), GhostPowers.REAPERS_BELL_RING, SoundCategory.PLAYERS, 1f, 1f);
+
             //Todo: Add to Player Ghost Logic
         }
     }
