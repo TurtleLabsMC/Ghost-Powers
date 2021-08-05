@@ -4,7 +4,8 @@
   "package": "com.github.turtlelabsmc.ghostpowers.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "LivingEntityRendererMixin"
+    "LivingEntityRendererMixin",
+    "PlayerEntityRendererMixin"
   ],
   "client": [
   ],
