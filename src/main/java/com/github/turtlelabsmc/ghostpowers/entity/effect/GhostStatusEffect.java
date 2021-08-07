@@ -1,11 +1,9 @@
 package com.github.turtlelabsmc.ghostpowers.entity.effect;
 
 import com.github.turtlelabsmc.ghostpowers.GhostPowers;
-import com.github.turtlelabsmc.ghostpowers.mixin.LivingEntityRendererMixin;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.player.PlayerEntity;
