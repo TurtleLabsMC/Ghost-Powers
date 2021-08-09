@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "com.github.turtlelabsmc.ghostpowers.GhostPowers"
+    ],
+    "client": [
+      "com.github.turtlelabsmc.ghostpowers.GhostPowersClient"
     ]
   },
   "mixins": [

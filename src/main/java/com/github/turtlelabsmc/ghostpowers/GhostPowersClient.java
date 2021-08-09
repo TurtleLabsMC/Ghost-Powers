@@ -1,4 +1,10 @@
 package com.github.turtlelabsmc.ghostpowers;
 
-public class GhostPowersClient {
+import net.fabricmc.api.ClientModInitializer;
+
+public class GhostPowersClient implements ClientModInitializer {
+    @Override
+    public void onInitializeClient() {
+
+    }
 }
