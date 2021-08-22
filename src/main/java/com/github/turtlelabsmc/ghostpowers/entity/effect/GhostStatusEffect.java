@@ -19,6 +19,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.jmx.Server;
 
 public class GhostStatusEffect extends StatusEffect {
+    private static final AbilitySource GHOST_EFFECT = Pal.getAbilitySource(new Identifier(GhostPowers.MODID, "ghost_effect_flight"));
+    private double startingY;
+
     public GhostStatusEffect() {
         super(StatusEffectType.BENEFICIAL, 0xFFFFFF);
     }
@@ -27,8 +30,16 @@ public class GhostStatusEffect extends StatusEffect {
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
         if(entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
+            startingY = player.getY();
             player.world.playSound(null, player.getBlockPos(), GhostPowers.REAPERS_BELL_RING, SoundCategory.PLAYERS, 1f, 1f);
             player.noClip = true;
+            if (!player.world.isClient()) {
+                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                if(serverPlayer.interactionManager.isSurvivalLike()) {
+                    Pal.grantAbility(player, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
+                    Pal.grantAbility(player, VanillaAbilities.FLYING, GHOST_EFFECT);
+                }
+            }
         }
     }
 
@@ -39,7 +50,13 @@ public class GhostStatusEffect extends StatusEffect {
 
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-        entity.setVelocity(entity.getVelocity().getX(), 0, entity.getVelocity().getZ());
+        if(entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            double y = player.getY();
+            System.out.println(((y - startingY) >= -3 && (y - startingY) <= 3));
+            if (((y - startingY) >= -3 && (y - startingY) <= 3))
+                player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
+        }
     }
 
     @Override
@@ -48,6 +65,13 @@ public class GhostStatusEffect extends StatusEffect {
             PlayerEntity player = (PlayerEntity) entity;
             player.world.playSound(null, player.getBlockPos(), GhostPowers.REAPERS_BELL_RING, SoundCategory.PLAYERS, 1f, 1f);
             player.noClip = false;
+            if (!player.world.isClient()) {
+                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                if(serverPlayer.interactionManager.isSurvivalLike()) {
+                    Pal.grantAbility(player, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
+                    Pal.grantAbility(player, VanillaAbilities.FLYING, GHOST_EFFECT);
+                }
+            }
         }
     }
 }
