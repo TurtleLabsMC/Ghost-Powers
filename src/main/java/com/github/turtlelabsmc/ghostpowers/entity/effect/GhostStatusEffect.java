@@ -9,7 +9,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -21,6 +23,8 @@ import org.apache.logging.log4j.core.jmx.Server;
 public class GhostStatusEffect extends StatusEffect {
     private static final AbilitySource GHOST_EFFECT = Pal.getAbilitySource(new Identifier(GhostPowers.MODID, "ghost_effect_flight"));
     private double startingY;
+    private double maxY = 3;
+    private double minY = 3;
 
     public GhostStatusEffect() {
         super(StatusEffectType.BENEFICIAL, 0xFFFFFF);
@@ -30,11 +34,13 @@ public class GhostStatusEffect extends StatusEffect {
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
         if(entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            startingY = player.getY();
+            startingY = Math.round(player.getY());
+
             player.world.playSound(null, player.getBlockPos(), GhostPowers.REAPERS_BELL_RING, SoundCategory.PLAYERS, 1f, 1f);
-            player.noClip = true;
+
             if (!player.world.isClient()) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                player.noClip = true;
                 if(serverPlayer.interactionManager.isSurvivalLike()) {
                     Pal.grantAbility(player, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
                     Pal.grantAbility(player, VanillaAbilities.FLYING, GHOST_EFFECT);
@@ -52,10 +58,11 @@ public class GhostStatusEffect extends StatusEffect {
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         if(entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
-            double y = player.getY();
-            System.out.println(((y - startingY) >= -3 && (y - startingY) <= 3));
-            if (((y - startingY) >= -3 && (y - startingY) <= 3))
-                player.setVelocity(player.getVelocity().getX(), 0, player.getVelocity().getZ());
+            if (!(player.getY() - startingY <= maxY)) {
+                player.setPos(player.getX(), startingY + maxY, player.getZ());
+            }else if (!(player.getY() - startingY >= -minY)) {
+                player.setPos(player.getX(), startingY - minY, player.getZ());
+            }
         }
     }
 
@@ -63,13 +70,16 @@ public class GhostStatusEffect extends StatusEffect {
     public void onRemoved(LivingEntity entity, AttributeContainer attributes, int amplifier) {
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
+            startingY = player.getY();
+
             player.world.playSound(null, player.getBlockPos(), GhostPowers.REAPERS_BELL_RING, SoundCategory.PLAYERS, 1f, 1f);
-            player.noClip = false;
+
             if (!player.world.isClient()) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                player.noClip = false;
                 if(serverPlayer.interactionManager.isSurvivalLike()) {
-                    Pal.grantAbility(player, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
-                    Pal.grantAbility(player, VanillaAbilities.FLYING, GHOST_EFFECT);
+                    Pal.revokeAbility(player, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
+                    Pal.revokeAbility(player, VanillaAbilities.FLYING, GHOST_EFFECT);
                 }
             }
         }
