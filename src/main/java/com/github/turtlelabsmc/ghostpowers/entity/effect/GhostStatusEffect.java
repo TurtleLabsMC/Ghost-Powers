@@ -37,6 +37,8 @@ public class GhostStatusEffect extends StatusEffect {
             startingY = Math.round(player.getY());
 
             player.world.playSound(null, player.getBlockPos(), GhostPowers.REAPERS_BELL_RING, SoundCategory.PLAYERS, 1f, 1f);
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, Integer.MAX_VALUE, 2, false, false, false));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, Integer.MAX_VALUE, 2, false, false, false));
 
             if (!player.world.isClient()) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
@@ -73,6 +75,8 @@ public class GhostStatusEffect extends StatusEffect {
             startingY = player.getY();
 
             player.world.playSound(null, player.getBlockPos(), GhostPowers.REAPERS_BELL_RING, SoundCategory.PLAYERS, 1f, 1f);
+            player.removeStatusEffect(StatusEffects.SLOWNESS);
+            player.removeStatusEffect(StatusEffects.BLINDNESS);
 
             if (!player.world.isClient()) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
