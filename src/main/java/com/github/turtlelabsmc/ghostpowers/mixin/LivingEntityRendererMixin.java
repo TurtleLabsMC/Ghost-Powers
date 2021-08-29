@@ -21,6 +21,8 @@ public abstract class LivingEntityRendererMixin extends EntityRenderer<LivingEnt
         super(ctx);
     }
 
+    /*renderColorChangedModel just changes the color of the PlayerEntity
+    based on if it has the Ghost Effect or not*/
     @Environment(EnvType.CLIENT)
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", ordinal = 0))
     private void renderColorChangedModel(EntityModel model, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, LivingEntity player) {
