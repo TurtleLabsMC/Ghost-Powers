@@ -32,10 +32,10 @@ public class GhostStatusEffect extends StatusEffect {
 
             if (!player.world.isClient()) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                player.noClip = true;
+                serverPlayer.noClip = true;
                 if(serverPlayer.interactionManager.isSurvivalLike()) {
-                    Pal.grantAbility(player, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
-                    Pal.grantAbility(player, VanillaAbilities.FLYING, GHOST_EFFECT);
+                    Pal.grantAbility(serverPlayer, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
+                    Pal.grantAbility(serverPlayer, VanillaAbilities.FLYING, GHOST_EFFECT);
                 }
             }
         }
@@ -66,10 +66,10 @@ public class GhostStatusEffect extends StatusEffect {
 
             if (!player.world.isClient()) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                player.noClip = false;
+                serverPlayer.noClip = false;
                 if(serverPlayer.interactionManager.isSurvivalLike()) {
-                    Pal.revokeAbility(player, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
-                    Pal.revokeAbility(player, VanillaAbilities.FLYING, GHOST_EFFECT);
+                    Pal.revokeAbility(serverPlayer, VanillaAbilities.ALLOW_FLYING, GHOST_EFFECT);
+                    Pal.revokeAbility(serverPlayer, VanillaAbilities.FLYING, GHOST_EFFECT);
                 }
             }
         }
